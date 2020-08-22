@@ -8,6 +8,7 @@ because what happens if you want to make a quick change.
 But you copy and pasted for a hundred lines that's bad code.
 */
 
+
 // Gets input from input field
 function getUserNumberInput() {
   return parseFloat(usrInput.value);
