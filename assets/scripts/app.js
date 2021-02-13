@@ -3,6 +3,7 @@
 const defaultResult = 0;
 let currentResult = defaultResult;
 let logEntries = [];
+let lastEntry = logEntries.length-1;
 /* You should make functions often for a website 
 because what happens if you want to make a quick change.
 But you copy and pasted for a hundred lines that's bad code.
@@ -41,7 +42,8 @@ function add() {
   const initialResult = currentResult;
   currentResult += enteredNumber;
   createAndWriteOutput('+', initialResult, enteredNumber);
-   writeToLog("ADD",initialResult,enteredNumber,currentResult);
+  writeToLog("ADD+",initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
  
 }
 
@@ -50,7 +52,8 @@ function subtract() {
   const initialResult = currentResult;
   currentResult -= enteredNumber;
   createAndWriteOutput('-', initialResult, enteredNumber);
-  writeToLog("SUBTRACT",initialResult,enteredNumber,currentResult);
+  writeToLog("SUBTRACT-",initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
 }
 
 function multiply() {
@@ -58,7 +61,8 @@ function multiply() {
   const initialResult = currentResult;
   currentResult *= enteredNumber;
   createAndWriteOutput('*', initialResult, enteredNumber);
-  writeToLog("MULTIPLY",initialResult,enteredNumber,currentResult);
+  writeToLog("MULTIPLY*",initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
 }
 
 function divide() {
@@ -66,7 +70,8 @@ function divide() {
   const initialResult = currentResult;
   currentResult /= enteredNumber;
   createAndWriteOutput('/', initialResult, enteredNumber);
-  writeToLog("DIVIDE",initialResult,enteredNumber,currentResult);
+  writeToLog("DIVIDE/",initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
 }
 
 function clear(){
@@ -74,9 +79,25 @@ function clear(){
   const initialResult = currentResult;
   currentResult = defaultResult
   outputResult(currentResult,'')
-  writeToLog("CLEAR",initialResult,enteredNumber,currentResult);
+  writeToLog("CLEAR ",initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
 
 }
+function back(){
+  lastEntry -= 1; 
+  currentResult = logEntries[lastEntry].result;
+  const prevOperation =logEntries[lastEntry].operation.charAt(logEntries[lastEntry].operation.length-1)
+  const prevResult = logEntries[lastEntry].prevResult
+  const prevOperandNum = logEntries[lastEntry].number
+  if(prevOperation == " "){
+    outputResult(currentResult,'')
+  }
+  else{
+    createAndWriteOutput(prevOperation,prevResult,prevOperandNum);
+  }
+  writeToLog("Back" + prevOperation,prevResult,prevOperandNum,currentResult);
+}
+backBtn.addEventListener('click',back);
 clearBtn.addEventListener('click',clear);
 addBtn.addEventListener('click', add);
 subtractBtn.addEventListener('click', subtract);

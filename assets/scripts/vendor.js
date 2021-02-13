@@ -3,7 +3,7 @@ const addBtn = document.getElementById('btn-add');
 const subtractBtn = document.getElementById('btn-subtract');
 const multiplyBtn = document.getElementById('btn-multiply');
 const divideBtn = document.getElementById('btn-divide');
-
+const backBtn = document.getElementById('btn-back')
 const clearBtn = document.getElementById('btn-clear')
 
 const currentResultOutput = document.getElementById('current-result');
