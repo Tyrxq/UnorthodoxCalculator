@@ -24,6 +24,7 @@ function writeToLog(operationIdenity,prevResult,operationNumber,newResult){
   //This is an object
   //Pretty similar to a dictinary in Python
   //But used more like a class than a list
+  //It could be used as a dictionary
   const logEntry = {
     operation: operationIdenity,
     prevResult: prevResult,
@@ -83,6 +84,9 @@ function clear(){
   lastEntry = logEntries.length-1;
 
 }
+//This function copies the the second to last log entry and append it to the log entries array.
+//It will continue to go down the log entries array until another function is called.
+
 function back(){
   lastEntry -= 1; 
   currentResult = logEntries[lastEntry].result;
