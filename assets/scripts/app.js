@@ -12,7 +12,26 @@ But you copy and pasted for a hundred lines that's bad code.
 
 // Gets input from input field
 function getUserNumberInput() {
-  return parseFloat(usrInput.value);
+   let input = parseFloat(usrInput.value);
+   if(isNaN(input)){
+     input = 0;
+   }
+   return input;
+}
+function calculateResult(calculationType){
+  const enteredNumber =  getUserNumberInput();
+  const initialResult = currentResult;
+  let mathOperator;
+  if(calculationType === "ADD"){
+    currentResult += enteredNumber;
+    mathOperator = "+";
+  }else{
+    currentResult -= enteredNumber;
+    mathOperator = "-"
+  }
+  createAndWriteOutput(mathOperator,initialResult,enteredNumber)
+  writeToLog(calculationType + mathOperator,initialResult,enteredNumber,currentResult);
+  lastEntry = logEntries.length-1;
 }
 
 // Generates and writes calculation log
@@ -38,22 +57,12 @@ function writeToLog(operationIdenity,prevResult,operationNumber,newResult){
 }
 
 function add() {
-  const enteredNumber = getUserNumberInput();
-  const initialResult = currentResult;
-  currentResult += enteredNumber;
-  createAndWriteOutput('+', initialResult, enteredNumber);
-  writeToLog("ADD+",initialResult,enteredNumber,currentResult);
-  lastEntry = logEntries.length-1;
+  calculateResult("ADD");
  
 }
 
 function subtract() {
-  const enteredNumber = getUserNumberInput();
-  const initialResult = currentResult;
-  currentResult -= enteredNumber;
-  createAndWriteOutput('-', initialResult, enteredNumber);
-  writeToLog("SUBTRACT-",initialResult,enteredNumber,currentResult);
-  lastEntry = logEntries.length-1;
+  calculateResult("SUBTRACT");
 }
 
 function multiply() {
