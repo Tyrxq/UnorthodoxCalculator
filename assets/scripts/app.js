@@ -13,25 +13,34 @@ But you copy and pasted for a hundred lines that's bad code.
 // Gets input from input field
 function getUserNumberInput() {
    let input = parseFloat(usrInput.value);
-   if(isNaN(input)){
-     input = 0;
-   }
+  //  if(isNaN(input)){
+  //    input = 0;
+  //  }
    return input;
 }
 function calculateResult(calculationType){
   const enteredNumber =  getUserNumberInput();
   const initialResult = currentResult;
   let mathOperator;
-  if(calculationType === "ADD"){
-    currentResult += enteredNumber;
-    mathOperator = "+";
-  }else{
-    currentResult -= enteredNumber;
-    mathOperator = "-"
+  if (!isNaN(enteredNumber)){
+    if(calculationType === "ADD"){
+      currentResult += enteredNumber;
+      mathOperator = "+";
+    }else if(calculationType === "SUBTRACT"){
+      currentResult -= enteredNumber;
+      mathOperator = "-";
+    }else if(calculationType === "MULTIPLY"){
+      currentResult *= enteredNumber;
+      mathOperator = "*";
+    }
+    else{
+      currentResult /= enteredNumber;
+      mathOperator = "/";
+    }
+    createAndWriteOutput(mathOperator,initialResult,enteredNumber)
+    writeToLog(calculationType + mathOperator,initialResult,enteredNumber,currentResult);
+    lastEntry = logEntries.length-1;
   }
-  createAndWriteOutput(mathOperator,initialResult,enteredNumber)
-  writeToLog(calculationType + mathOperator,initialResult,enteredNumber,currentResult);
-  lastEntry = logEntries.length-1;
 }
 
 // Generates and writes calculation log
@@ -66,46 +75,43 @@ function subtract() {
 }
 
 function multiply() {
-  const enteredNumber = getUserNumberInput();
-  const initialResult = currentResult;
-  currentResult *= enteredNumber;
-  createAndWriteOutput('*', initialResult, enteredNumber);
-  writeToLog("MULTIPLY*",initialResult,enteredNumber,currentResult);
-  lastEntry = logEntries.length-1;
+  calculateResult("MULTIPLY");
 }
 
 function divide() {
-  const enteredNumber = getUserNumberInput();
-  const initialResult = currentResult;
-  currentResult /= enteredNumber;
-  createAndWriteOutput('/', initialResult, enteredNumber);
-  writeToLog("DIVIDE/",initialResult,enteredNumber,currentResult);
-  lastEntry = logEntries.length-1;
+  calculateResult("DIVIDE");
 }
 
 function clear(){
   const enteredNumber = getUserNumberInput();
   const initialResult = currentResult;
-  currentResult = defaultResult
-  outputResult(currentResult,'')
+  currentResult = defaultResult;
+  outputResult(currentResult,'');
   writeToLog("CLEAR ",initialResult,enteredNumber,currentResult);
   lastEntry = logEntries.length-1;
 
 }
+//There is a bug if you press the back button too fast. The array will not fully pop the elements.
 function back(){
-  lastEntry -= 1; 
-  currentResult = logEntries[lastEntry].result;
-  const prevOperation =logEntries[lastEntry].operation.charAt(logEntries[lastEntry].operation.length-1)
-  const prevResult = logEntries[lastEntry].prevResult
-  const prevOperandNum = logEntries[lastEntry].number
-  if(prevOperation == " "){
-    outputResult(currentResult,'')
+  if(logEntries.length > 1){
+    lastEntry -= 1; 
+    currentResult = logEntries[lastEntry].result;
+    const prevOperation =logEntries[lastEntry].operation.charAt(logEntries[lastEntry].operation.length-1);
+    const prevResult = logEntries[lastEntry].prevResult;
+    const prevOperandNum = logEntries[lastEntry].number;
+    if(prevOperation == " "){ //This changes the output results if the previos Opreation was clear
+      outputResult(currentResult,'')
+    }else{
+      createAndWriteOutput(prevOperation,prevResult,prevOperandNum);
+    }
+    logEntries.pop(); //Pops the last object in logEntries
+    console.log(logEntries);
+    console.log("BACK:"+logEntries[logEntries.length-1].operation);   
+  }else{
+    logEntries = [];
+    clear();
   }
-  else{
-    createAndWriteOutput(prevOperation,prevResult,prevOperandNum);
-  }
-  writeToLog("Back" + prevOperation,prevResult,prevOperandNum,currentResult);
-}
+} 
 backBtn.addEventListener('click',back);
 clearBtn.addEventListener('click',clear);
 addBtn.addEventListener('click', add);
